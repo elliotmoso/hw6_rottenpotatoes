@@ -91,11 +91,10 @@ class MoviesController < ApplicationController
     benchType=params[:type]
     @results=[]
     times_to_run=Movie.count/2
-    search_movies=Movie.all(:limit=>times_to_run)
-    search_goers=Moviegoer.all(:limit=>times_to_run)
     case benchType
 
     when "movies"
+      search_movies=Movie.all(:limit=>times_to_run)
       start_time=Time.now
       search_movies.each do |bench_movie|
          reviews = bench_movie.reviews 
@@ -104,6 +103,7 @@ class MoviesController < ApplicationController
       total_time=Time.now - start_time
       @results<<{:action => "movie.reviews", :times_run => times_to_run, :time=>total_time.round(5)}
     when "moviegoers"
+      search_goers=Moviegoer.all(:limit=>times_to_run)
       start_time=Time.now     
       search_goers.each do |g|
          reviews = g.reviews 
